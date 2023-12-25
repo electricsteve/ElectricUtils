@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"id": "electricutils",
+	"version": "${version}",
+	"name": "ElectricUtils",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"ElectricSteve"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/electricutils/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"electricsteve.electricutils.ElectricUtils"
+		],
+		"client": [
+			"electricsteve.electricutils.ElectricUtilsClient"
+		],
+		"modmenu": [ "electricsteve.electricutils.ModMenuIntegration" ]
+	},
+	"mixins": [
+		"electricutils.mixins.json",
+		{
+			"config": "electricutils.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.2",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"yet_another_config_lib_v3": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
