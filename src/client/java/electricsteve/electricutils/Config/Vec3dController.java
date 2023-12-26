@@ -7,12 +7,11 @@ import dev.isxander.yacl3.gui.AbstractWidget;
 import dev.isxander.yacl3.gui.YACLScreen;
 import dev.isxander.yacl3.gui.controllers.ActionController;
 import dev.isxander.yacl3.gui.controllers.ControllerWidget;
+import dev.isxander.yacl3.gui.utils.GuiUtils;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
-
-import java.util.function.Function;
 
 public class Vec3dController implements Controller<Vec3d> {
     private final Option<Vec3d> option;
@@ -43,13 +42,45 @@ public class Vec3dController implements Controller<Vec3d> {
     }
 
     public static class Vec3dControllerWidget extends ControllerWidget<Vec3dController> {
+        protected boolean hovered1;
+        protected boolean hovered2;
+        protected boolean hovered3;
+
         public Vec3dControllerWidget(Vec3dController control, YACLScreen screen, Dimension<Integer> dim) {
             super(control, screen, dim);
         }
 
         @Override
-        protected void drawHoveredControl(DrawContext graphics, int mouseX, int mouseY, float delta) {
+        public void render(DrawContext graphics, int mouseX, int mouseY, float delta) {
+            Dimension<Integer> dim = getDimension();
+            Dimension<Integer> dim1 = Dimension.ofInt(dim.x(), dim.y(), dim.width() / 3, dim.height());
+            Dimension<Integer> dim2 = Dimension.ofInt(dim.x() + dim.width() / 3, dim.y(), dim.width() / 3, dim.height());
+            Dimension<Integer> dim3 = Dimension.ofInt(dim.x() + dim.width() / 3 * 2, dim.y(), dim.width() / 3, dim.height());
 
+            hovered = isMouseOver(mouseX, mouseY);
+            hovered1 = isMouseOver(mouseX, mouseY, dim1);
+            hovered2 = isMouseOver(mouseX, mouseY, dim2);
+            hovered3 = isMouseOver(mouseX, mouseY, dim3);
+
+            Text name = control.option().changed() ? modifiedOptionName : control.option().name();
+            Text shortenedName = Text.literal(GuiUtils.shortenString(name.getString(), textRenderer, getDimension().width() - getControlWidth() - getXPadding() - 7, "...")).setStyle(name.getStyle());
+
+            drawButtonRect(graphics, dim1.x(), dim1.y(), dim1.xLimit(), dim1.yLimit(), hovered1 || focused, isAvailable());
+            drawButtonRect(graphics, dim2.x(), dim2.y(), dim2.xLimit(), dim2.yLimit(), hovered2 || focused, isAvailable());
+            drawButtonRect(graphics, dim3.x(), dim3.y(), dim3.xLimit(), dim3.yLimit(), hovered3 || focused, isAvailable());
+
+            graphics.drawText(textRenderer, shortenedName, getDimension().x() + getXPadding(), getTextY(), getValueColor(), true);
+
+
+            drawValueText(graphics, mouseX, mouseY, delta);
+            if (isHovered()) {
+                drawHoveredControl(graphics, mouseX, mouseY, delta);
+            }
+        }
+
+        public boolean isMouseOver(double mouseX, double mouseY, Dimension<Integer> dim) {
+            if (dim == null) return false;
+            return dim.isPointInside((int) mouseX, (int) mouseY);
         }
 
         @Override
@@ -57,7 +88,7 @@ public class Vec3dController implements Controller<Vec3d> {
             if (!isMouseOver(mouseX, mouseY) || !isAvailable())
                 return false;
 
-            toggleSetting();
+            OptionClicked();
             return true;
         }
 
@@ -66,7 +97,9 @@ public class Vec3dController implements Controller<Vec3d> {
             return getUnhoveredControlWidth();
         }
 
-        public void toggleSetting() {
+        public void OptionClicked() {
+
+
             playDownSound();
         }
 
@@ -82,7 +115,7 @@ public class Vec3dController implements Controller<Vec3d> {
             }
 
             if (keyCode == InputUtil.GLFW_KEY_ENTER || keyCode == InputUtil.GLFW_KEY_SPACE || keyCode == InputUtil.GLFW_KEY_KP_ENTER) {
-                toggleSetting();
+                OptionClicked();
                 return true;
             }
 
