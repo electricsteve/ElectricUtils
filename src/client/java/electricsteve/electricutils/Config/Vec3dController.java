@@ -20,7 +20,7 @@ public class Vec3dController implements Controller<Vec3d> {
 
     @Override
     public Option<Vec3d> option() {
-        return null;
+        return option;
     }
 
     @Override
