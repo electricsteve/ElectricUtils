@@ -5,17 +5,26 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.utils.Dimension;
 import dev.isxander.yacl3.gui.AbstractWidget;
 import dev.isxander.yacl3.gui.YACLScreen;
+import dev.isxander.yacl3.gui.controllers.ActionController;
 import dev.isxander.yacl3.gui.controllers.ControllerWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.function.Function;
+
 public class Vec3dController implements Controller<Vec3d> {
     private final Option<Vec3d> option;
+    private final Text text;
 
     public Vec3dController(Option<Vec3d> option) {
+        this(option, ActionController.DEFAULT_TEXT);
+    }
+
+    public Vec3dController(Option<Vec3d> option, Text text) {
         this.option = option;
+        this.text = text;
     }
 
     @Override
@@ -25,7 +34,7 @@ public class Vec3dController implements Controller<Vec3d> {
 
     @Override
     public Text formatValue() {
-        return null;
+        return text;
     }
 
     @Override
