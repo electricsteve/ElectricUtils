@@ -21,6 +21,9 @@ repositories {
 	maven {
 		url 'https://maven.terraformersmc.com/releases'
 	}
+	maven {
+		url = 'https://maven.xpple.dev/maven2'
+	}
 }
 
 loom {
@@ -40,9 +43,13 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+	include modImplementation("dev.xpple:clientarguments:${project.clientarguments_version}")
+
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation 'dev.isxander.yacl:yet-another-config-lib-fabric:3.2.1+1.20'
+
+	implementation("com.google.code.gson:gson:${project.gson_version}")
 
 }
 

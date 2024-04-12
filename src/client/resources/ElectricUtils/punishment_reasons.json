@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Racism",
+    "description": "Saying racist things in chat.",
+    "type": "mute",
+    "length": "1h"
+  }
+]
